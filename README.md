@@ -97,7 +97,7 @@ This final logic is implemented in:
 
 Running the Pipeline
 
-Example execution order:
+## Example execution order:
 
 python 02_isolate_cube_v2.py
 python 10_export_cube_only_v2.py
@@ -106,15 +106,15 @@ python 12_align_planes_robust_v2.py
 
 Each script exports intermediate .ply files for inspection and debugging.
 
-Project Links
+### Project Links
 
-ChatGPT discussion (process & debugging):
-https://your-chatgpt-link-here
+ChatGPT discussion [(process & debugging):](https://chatgpt.com/share/696fc076-d1f4-800f-8bfd-f76d6471dd11)
 
-Claude discussion (alternative reasoning):
-https://your-claude-link-here
 
-Miro board (visual reasoning & pipeline):
+Claude discussion (alternative reasoning):https://claude.ai/share/d72d2f0c-528a-4dd7-96d2-82b9f2c0cb25
+
+
+Miro board (visual reasoning & pipeline): [https://miro.com/app/board/uXjVGMOQ9k4=/](https://miro.com/welcomeonboard/QjFOT0F1WnhOS3ZRYmR4K0YxalhrYk54aytpUjkvQkhVZlFPVndMcTRKL3dueVpqZUFnNGs0QSs2emxrVDVuejdQOVNPQjZNN3FXM3ByanhFVzJ5WnkyczdId2FwLzJEZ3VuRWo5MFNuaFpRR3hORWxvOFBndVF4RmlKenVnTlR3VHhHVHd5UWtSM1BidUtUYmxycDRnPT0hdjE=?share_link_id=804063472821)
 https://your-miro-link-here
 
 Authors
