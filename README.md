@@ -1,86 +1,125 @@
-# Group Project Repository Submission Template 
-## Index
-  - [Overview](#overview) 
-  - [Getting Started](#getting-started)
-  - [Demo](#demo)
-  - [Authors](#authors)
-  - [References](#references)
-  - [Credits](#credits)
-<!--  Other options to write Readme
-  - [Deployment](#deployment)
-  - [Used or Referenced Projects](Used-or-Referenced-Projects)
--->
-## MRAC0X(XX/XX): ClassName XX - Student Project Name
-<!--Write a few sentences of academic context and project description -->  
-This project aims to demonstrate a fantastic application using fascinating technologies, developed within the scope of the best class ever.   
+# Cube Extraction & Alignment from Point Clouds  
+**MRAC – Student Group Project**
+
 ## Overview
-<!-- Write Overview about this project -->
-The project's justification, state-of-the-art, and inspiration live in this section.
+This project focuses on extracting a cube-like object from raw point cloud scans, removing the floor, segmenting planar faces, and robustly aligning the cube to a canonical local XYZ coordinate system. The workflow was developed iteratively using Open3D and Python, with a strong emphasis on explainability and debugging through visual feedback.
 
-## Getting Started
+---
 
-### Prerequisites
-Ensure that you fulfill the following criteria to replicate this project.
-* Ubuntu LTS 20.04 <
-* Python 3.7 <
-* Docker
+## Pipeline Summary
+1. Floor detection & removal  
+2. Cube isolation  
+3. Plane segmentation (faces)  
+4. Face labeling via normals  
+5. Robust orientation alignment  
+6. Final cube export  
 
-### Depencies
-The project's dependencies include:
-* Numpy - for matrix manipulation
-* OpenCV - for image processing
-* ROS - for interfacing with the robot
+---
 
-The dependencies are satisfied using the following sources:
+## Folder Structure
+ube_demo/
+│
+├── 01_measure_cube.py
+├── 02_isolate_cube.py
+├── 02_isolate_cube_v2.py
+├── 03_measure_cube_obb.py
+├── 06_remove_floor.py
+├── 06b_remove_floor.py
+├── 10_export_cube_only.py
+├── 10_export_cube_only_v2.py
+├── 11_cube_faces_colorize.py
+├── 12_align_planes_robust.py
+├── 12_align_planes_robust_v2.py
+│
+├── scan_raw.ply
+├── scan_floor_aligned.ply
+├── cube_only.ply
+└── README.md
+
+---
+
+## Environment Setup
+
+### Operating System
+- Windows 10 / Ubuntu 20.04+
+
+### Python Environment
+- Conda
+- Python 3.10  
+- Compiler: Conda default toolchain (MSVC on Windows / GCC on Linux)
 
 ```bash
-# ROS Noetic and core dependencies
-wget -c https://raw.githubusercontent.com/qboticslabs/ros_install_noetic/master/ros_install_noetic.sh && chmod +x ./ros_install_noetic.sh && ./ros_install_noetic.sh
-# install numpy
-pip3 install numpy setuptools
-```
+conda create -n Software2 python=3.10
+conda activate Software2
+pip install numpy open3d scipy scikit-learn matplotlib
+Main Dependencies
 
-### Installing
-A step by step series of examples that tell you how to get a development 
-env running
+Open3D – point cloud processing
 
-```bash
-cd ~/catkin_ws/src
-git submodule init
-git submodule update
-cd ../
-rosdep install --from-paths src --ignore-src -r -y
-catkin_make -DCMAKE_BUILD_TYPE=Release
-source ./devel/setup.bash
-```
-### Deployment
-Add additional notes about how to deploy this on a live system
-* Run the application with `.docker/run_user_nvidia.sh`
-* Ensure that you are running the indicate command `sudo chmod -R <user_name> \dev_ws` for permitions
-* Run `terminator`
+NumPy – numerical operations
 
-## Demo
-Here is what the project can do and what are the results.
+SciPy – spatial mathematics
 
-The project can be launched with the following command:
-* `roslaunch package_name package_name.launch`
+scikit-learn – DBSCAN clustering
 
-This opens up `rviz` and shows the robot moving around
+Matplotlib – visualization and debugging
 
-## Authors
-  - [Name](insert linkedin/webpage link) - role
+Key Concepts Used
 
-## References
-- [K. Albee et al., “A robust observation, planning, and control pipeline for autonomous rendezvous with tumbling targets,” Frontiers in Robotics and AI, vol. 8, p. 234, 2021, doi: 10.3389/frobt.2021.641338.](https://www.frontiersin.org/articles/10.3389/frobt.2021.641338/full)
+RANSAC plane detection
 
-## Credits
-  - [Name](insert linkedin/webpage link) - role
+Inliers vs outliers
 
-<!--  DO NOT REMOVE
--->
-#### Acknowledgements
+DBSCAN clustering (largest cluster extraction)
 
-- Creation of GitHub template: [Marita Georganta](https://www.linkedin.com/in/marita-georganta/) - Robotic Sensing Expert
-- Creation of MRAC-IAAC GitHub Structure: [Huanyu Li](https://www.linkedin.com/in/huanyu-li-457590268/) - Robotic Researcher
+Plane normal comparison
+
+Oriented Bounding Boxes (OBB)
+
+Normal-based axis alignment
+
+What Finally Made the Alignment Work
+
+Reliable alignment was only achieved after:
+
+Explicit plane (face) extraction
+
+Normal-based face labeling
+
+Avoiding pure OBB-based alignment
+
+Using dominant planar normals to define the local XYZ axes
+
+This final logic is implemented in:
+
+12_align_planes_robust_v2.py
+
+Running the Pipeline
+
+Example execution order:
+
+python 02_isolate_cube_v2.py
+python 10_export_cube_only_v2.py
+python 12_align_planes_robust_v2.py
 
 
+Each script exports intermediate .ply files for inspection and debugging.
+
+Project Links
+
+ChatGPT discussion (process & debugging):
+https://your-chatgpt-link-here
+
+Claude discussion (alternative reasoning):
+https://your-claude-link-here
+
+Miro board (visual reasoning & pipeline):
+https://your-miro-link-here
+
+Authors
+
+Leonard
+XIO
+Jenny 
+
+Group Members – testing, evaluation, presentation
