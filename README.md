@@ -48,11 +48,12 @@ ube_demo/
 - Python 3.10  
 - Compiler: Conda default toolchain (MSVC on Windows / GCC on Linux)
 
-```bash
+
 conda create -n Software2 python=3.10
 conda activate Software2
 pip install numpy open3d scipy scikit-learn matplotlib
-Main Dependencies
+
+### Main Dependencies
 
 Open3D – point cloud processing
 
