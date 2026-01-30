@@ -1,23 +1,32 @@
-# Cube Extraction & Alignment from Point Clouds  
+# Cube Extraction & Alignment from Point Clouds
+
 **MRAC – Student Group Project**
 
-## Overview
+---
+
+## 📋 Overview
+
 This project focuses on extracting a cube-like object from raw point cloud scans, removing the floor, segmenting planar faces, and robustly aligning the cube to a canonical local XYZ coordinate system. The workflow was developed iteratively using Open3D and Python, with a strong emphasis on explainability and debugging through visual feedback.
 
 ---
 
-## Pipeline Summary
-1. Floor detection & removal  
-2. Cube isolation  
-3. Plane segmentation (faces)  
-4. Face labeling via normals  
-5. Robust orientation alignment  
-6. Final cube export  
+## 🔄 Pipeline Summary
+
+The processing workflow follows these sequential steps:
+
+1. **Floor Detection & Removal** – Isolate the cube from the ground plane
+2. **Cube Isolation** – Extract the cube object from the scene
+3. **Plane Segmentation** – Identify individual planar faces
+4. **Face Labeling** – Classify faces using normal vectors
+5. **Robust Orientation Alignment** – Align cube to canonical axes
+6. **Final Cube Export** – Save processed geometry
 
 ---
 
-## Folder Structure
-ube_demo/
+## 📁 Folder Structure
+
+```
+cube_demo/
 │
 ├── 01_measure_cube.py
 ├── 02_isolate_cube.py
@@ -35,92 +44,109 @@ ube_demo/
 ├── scan_floor_aligned.ply
 ├── cube_only.ply
 └── README.md
+```
 
 ---
 
-## Environment Setup
+## ⚙️ Environment Setup
 
 ### Operating System
 - Windows 10 / Ubuntu 20.04+
 
 ### Python Environment
-- Conda
-- Python 3.10  
-- Compiler: Conda default toolchain (MSVC on Windows / GCC on Linux)
+- **Package Manager:** Conda
+- **Python Version:** 3.10
+- **Compiler:** Conda default toolchain (MSVC on Windows / GCC on Linux)
 
+**Installation Steps:**
 
+```bash
 conda create -n Software2 python=3.10
 conda activate Software2
 pip install numpy open3d scipy scikit-learn matplotlib
+```
 
 ### Main Dependencies
 
-Open3D – point cloud processing
+| Library | Purpose |
+|---------|---------|
+| **Open3D** | Point cloud processing |
+| **NumPy** | Numerical operations |
+| **SciPy** | Spatial mathematics |
+| **scikit-learn** | DBSCAN clustering |
+| **Matplotlib** | Visualization and debugging |
 
-NumPy – numerical operations
+---
 
-SciPy – spatial mathematics
+## 🧠 Key Concepts Used
 
-scikit-learn – DBSCAN clustering
+- **RANSAC Plane Detection** – Robust plane fitting with inliers vs outliers
+- **DBSCAN Clustering** – Largest cluster extraction
+- **Plane Normal Comparison** – Face orientation analysis
+- **Oriented Bounding Boxes (OBB)** – Geometric hull computation
+- **Normal-Based Axis Alignment** – Canonical orientation recovery
 
-Matplotlib – visualization and debugging
+---
 
-Key Concepts Used
+## ✅ What Finally Made the Alignment Work
 
-RANSAC plane detection
+Reliable alignment was only achieved after implementing the following strategy:
 
-Inliers vs outliers
+1. **Explicit plane (face) extraction** – Rather than relying on global geometry
+2. **Normal-based face labeling** – Identifying each face by its orientation
+3. **Avoiding pure OBB-based alignment** – OBB proved insufficient for canonical orientation
+4. **Using dominant planar normals** – To define the local XYZ axes accurately
 
-DBSCAN clustering (largest cluster extraction)
+**Final implementation:** `12_align_planes_robust_v2.py`
 
-Plane normal comparison
+---
 
-Oriented Bounding Boxes (OBB)
+## 🚀 Running the Pipeline
 
-Normal-based axis alignment
+### Execution Order
 
-What Finally Made the Alignment Work
-
-Reliable alignment was only achieved after:
-
-Explicit plane (face) extraction
-
-Normal-based face labeling
-
-Avoiding pure OBB-based alignment
-
-Using dominant planar normals to define the local XYZ axes
-
-This final logic is implemented in:
-
-12_align_planes_robust_v2.py
-
-Running the Pipeline
-
-## Example execution order:
-
+```bash
+# Step 1: Isolate the cube from the raw scan
 python 02_isolate_cube_v2.py
+
+# Step 2: Export cube-only point cloud
 python 10_export_cube_only_v2.py
+
+# Step 3: Align cube to canonical axes
 python 12_align_planes_robust_v2.py
+```
 
+Each script exports intermediate `.ply` files for inspection and debugging.
 
-Each script exports intermediate .ply files for inspection and debugging.
+---
 
-### Project Links
+## 🔗 Project Links
 
-ChatGPT discussion [(process & debugging):](https://chatgpt.com/share/696fc076-d1f4-800f-8bfd-f76d6471dd11)
+### Development Documentation
 
+- **ChatGPT Discussion** (process & debugging):  
+  [View conversation](https://chatgpt.com/share/696fc076-d1f4-800f-8bfd-f76d6471dd11)
 
-Claude discussion (alternative reasoning):https://claude.ai/share/d72d2f0c-528a-4dd7-96d2-82b9f2c0cb25
+- **Claude Discussion** (alternative reasoning):  
+  [View conversation](https://claude.ai/share/d72d2f0c-528a-4dd7-96d2-82b9f2c0cb25)
 
+- **Miro Board** (visual reasoning & pipeline):  
+  [View board](https://miro.com/welcomeonboard/QjFOT0F1WnhOS3ZRYmR4K0YxalhrYk54aytpUjkvQkhVZlFPVndMcTRKL3dueVpqZUFnNGs0QSs2emxrVDVuejdQOVNPQjZNN3FXM3ByanhFVzJ5WnkyczdId2FwLzJEZ3VuRWo5MFNuaFpRR3hORWxvOFBndVF4RmlKenVnTlR3VHhHVHd5UWtSM1BidUtUYmxycDRnPT0hdjE=?share_link_id=804063472821)
 
-Miro board (visual reasoning & pipeline): [https://miro.com/app/board/uXjVGMOQ9k4=/](https://miro.com/welcomeonboard/QjFOT0F1WnhOS3ZRYmR4K0YxalhrYk54aytpUjkvQkhVZlFPVndMcTRKL3dueVpqZUFnNGs0QSs2emxrVDVuejdQOVNPQjZNN3FXM3ByanhFVzJ5WnkyczdId2FwLzJEZ3VuRWo5MFNuaFpRR3hORWxvOFBndVF4RmlKenVnTlR3VHhHVHd5UWtSM1BidUtUYmxycDRnPT0hdjE=?share_link_id=804063472821)
-https://your-miro-link-here
+---
 
-Authors
+## 👥 Team
 
-Leonard
-XIO
-Jenny 
+**Core Development:**
+- Leonard
+- XIO
+- Jenny
 
-Group Members – testing, evaluation, presentation
+**Testing & Evaluation:**
+- Group Members
+
+---
+
+## 📝 Notes
+
+This project demonstrates a complete pipeline for geometric extraction and alignment from noisy 3D scan data, with emphasis on robustness and visual verification at each processing stage.
